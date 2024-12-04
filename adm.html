@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        .logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .container {
+            width: 60%; /* Container menor */
+            margin: 0 auto;
+            padding: 2rem;
+            border: 2px solid #ddd; /* Borda visível */
+            border-radius: 10px; /* Bordas arredondadas */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            background-color: #fff; /* Cor de fundo branca */
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-control, .btn {
+            border-radius: 5px;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .btn-outline-secondary {
+            border-color: #6c757d;
+            color: #6c757d;
+            background-color: transparent;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .imovel {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+
+        .imovel button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .imovel button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-arrow {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            color: rgb(5, 12, 105);
+            cursor: pointer;
+        }
+
+        .back-arrow:hover {
+            color: #003366;
+        }
+
+        .text {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid p-0">
+        <div class="row">
+            <div class="col-md-12">
+                <header class="text-center p-3">
+                    <a href="login.html">
+                        <i class="bi bi-arrow-left back-arrow"></i>
+                    </a>
+                    <img src="img/logo.jpg" alt="Logo" class="logo">
+                    <h3 class="text text-center">Painel Administrativo</h3>
+                </header>
+            </div>
+        </div>
+<div class="container">
+        <div class="row">
+            <div class="col-md-12 p-5">
+                <h3 class="text">Cadastrar Imóvel</h3>
+                <form id="imovelForm">
+                    <div class="mb-3">
+                        <label for="endereco" class="form-label">Endereço:</label>
+                        <input type="text" class="form-control" id="endereco" name="endereco" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição:</label>
+                        <textarea class="form-control" id="descricao" name="descricao" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="num_comodos" class="form-label">Número de Cômodos:</label>
+                        <input type="number" class="form-control" id="num_comodos" name="num_comodos" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="data_nascimento" class="form-label">Data de Construção:</label>
+                        <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-secondary">Cadastrar</button>
+                </form>
+
+                <div id="message"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-12 m-3">
+      </div>
+    </div>
+  </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text text-center">Imóveis Cadastrados</h3>
+                <div id="imoveisList"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 m-3">
+          </div>
+        </div>
+      </div>
+
+
+    <script>
+        let imovelIdBeingEdited = null;
+
+        // Função para carregar imóveis cadastrados
+        async function loadImoveis() {
+            try {
+                const response = await fetch('http://localhost:3001/api/imoveis');
+                const data = await response.json();
+                const imoveisList = document.getElementById('imoveisList');
+                imoveisList.innerHTML = data.imoveis.map(imovel => `
+                    <div class="imovel">
+                        <p><strong>Endereço:</strong> ${imovel.endereco}</p>
+                        <p><strong>Descrição:</strong> ${imovel.descricao}</p>
+                        <p><strong>Número de Cômodos:</strong> ${imovel.num_comodos}</p>
+                        <p><strong>Data de Construção:</strong> ${new Date(imovel.data_nascimento).toLocaleDateString()}</p>
+                        <button onclick="editarImovel(${imovel.id_imovel})">Editar</button>
+                        <button onclick="excluirImovel(${imovel.id_imovel})">Excluir</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Erro ao carregar imóveis:', error);
+            }
+        }
+
+        // Função para cadastrar ou editar imóvel
+        document.getElementById('imovelForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const endereco = document.getElementById('endereco').value;
+            const descricao = document.getElementById('descricao').value;
+            const num_comodos = document.getElementById('num_comodos').value;
+            const data_nascimento = document.getElementById('data_nascimento').value;
+
+            // Verificação de dados
+            if (!endereco || !descricao || !num_comodos || !data_nascimento) {
+                alert('Todos os campos são obrigatórios!');
+                return;
+            }
+
+            try {
+                const url = imovelIdBeingEdited ? `http://localhost:3001/api/imoveis/editar/${imovelIdBeingEdited}` : 'http://localhost:3001/api/imoveis/cadastrar';
+                const method = imovelIdBeingEdited ? 'PUT' : 'POST';
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ endereco, descricao, num_comodos, data_nascimento })
+                });
+                const data = await response.json();
+                alert(data.message);
+                loadImoveis(); // Atualiza a lista de imóveis
+                resetForm();
+            } catch (error) {
+                console.error('Erro ao cadastrar/imovel:', error);
+            }
+        });
+
+        // Função para excluir imóvel
+        async function excluirImovel(id) {
+            const confirmacao = confirm('Tem certeza que deseja excluir este imóvel?');
+            if (!confirmacao) return;
+
+            try {
+                const response = await fetch(`http://localhost:3001/api/imoveis/excluir/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+
+                const data = await response.json();
+                alert(data.message);
+                loadImoveis(); // Atualiza a lista de imóveis após a exclusão
+            } catch (error) {
+                console.error('Erro ao excluir imóvel:', error);
+            }
+        }
+
+        // Função para editar imóvel
+        async function editarImovel(id) {
+            imovelIdBeingEdited = id;
+            const response = await fetch(`http://localhost:3001/api/imoveis/${id}`);
+            const imovelData = await response.json();
+
+            // Preencher o formulário com os dados do imóvel
+            document.getElementById('endereco').value = imovelData.endereco;
+            document.getElementById('descricao').value = imovelData.descricao;
+            document.getElementById('num_comodos').value = imovelData.num_comodos;
+            document.getElementById('data_nascimento').value = imovelData.data_nascimento;
+        }
+
+        // Função para resetar o formulário
+        function resetForm() {
+            document.getElementById('endereco').value = '';
+            document.getElementById('descricao').value = '';
+            document.getElementById('num_comodos').value = '';
+            document.getElementById('data_nascimento').value = '';
+            imovelIdBeingEdited = null;
+        }
+
+        // Carregar os imóveis ao carregar a página
+        window.onload = loadImoveis;
+    </script>
+
+</body>
+</html>

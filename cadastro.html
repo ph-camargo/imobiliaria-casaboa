@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" class="css">
+    <style>
+        html, body{
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-x: hidden;
+        }
+        .logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .container {
+            width: 60%; /* Container menor */
+            margin: 0 auto;
+            padding: 2rem;
+            border: 2px solid #ddd; /* Borda visível */
+            border-radius: 10px; /* Bordas arredondadas */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            background-color: #fff; /* Cor de fundo branca */
+        }
+
+        .form-control {
+            border-radius: 5px; /* Bordas arredondadas */
+            padding: 12px; /* Aumentando o espaço interno */
+            font-size: 14px; /* Tamanho de fonte ajustado */
+            width: 100%;
+        }
+
+        .btn-primary {
+            border-radius: 5px; /* Bordas arredondadas */
+            padding: 10px 20px;
+        }
+
+        .text-primary {
+            color: #0056b3; /* Azul mais escuro */
+            font-weight: bold; /* Negrito */
+        }
+
+        .p-3 {
+            padding: 2rem;
+        }
+
+        .back-arrow {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px; /* Tamanho maior para a seta */
+            color: rgb(5, 12, 105); /* Cor da seta */
+            cursor: pointer;
+        }
+
+        .back-arrow:hover {
+            color: #003366; /* Tom mais escuro de azul ao passar o mouse */
+        }
+
+        select.form-control {
+            border-radius: 5px; /* Bordas arredondadas para o select */
+            padding: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid p-0">
+        <div class="row">
+            <div class="col-md-12">
+                <header class="text-center p-3">
+                    <a href="home.html">
+                        <i class="bi bi-arrow-left back-arrow"></i>
+                    </a>
+                    <img src="img/logo.jpg" alt="Logo da Imobiliária" class="logo">
+                    <h2 class="text mt-3">Cadastro de Usuário</h2>
+                </header>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 p-5">
+                <ul class="list-group">
+                    <form id="formCadastro">
+                        <li class="list-group-item">
+                            <label for="nome">Nome:</label>
+                            <input type="text" class="form-control" id="nome" placeholder="Seu nome" required>
+                        </li>
+                
+                        <li class="list-group-item">
+                            <label for="email">E-mail:</label>
+                            <input type="email" class="form-control" id="email" placeholder="Seu e-mail" required>
+                        </li>
+                
+                        <li class="list-group-item">
+                            <label for="senha">Senha:</label>
+                            <input type="password" class="form-control" id="senha" placeholder="Senha" required>
+                        </li>
+                
+                        <li class="list-group-item">
+                            <label for="telefone">Telefone:</label>
+                            <input type="tel" class="form-control" id="telefone" placeholder="Seu telefone">
+                        </li>
+                
+                        <li class="list-group-item">
+                            <label for="tipoUsuario">Tipo de Usuário:</label>
+                            <select id="tipoUsuario" class="form-control" required>
+                                <option value="" disabled selected>Selecione</option>
+                                <option value="administrador">Administrador</option>
+                                <option value="usuario">Usuário Comum</option>
+                            </select>
+                        </li>
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <button type="submit" class="btn btn-outline-secondary">Cadastrar</button>
+                            <p class="link-login mb-0">Já tem uma conta? <a href="login.html" class="text-decoration-none text">Clique aqui para entrar</a></p>
+                        </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3001/api/cadastrar'; // URL da API de cadastro
+
+        document.getElementById('formCadastro').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+            const telefone = document.getElementById('telefone').value;
+            const tipoUsuario = document.getElementById('tipoUsuario').value;
+
+            fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, email, senha, telefone, tipoUsuario }),
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                alert(data.message || 'Cadastro realizado com sucesso!');
+                if (data.success) {
+                    window.location.href = 'home.html'; 
+                }
+            })
+            .catch((error) => console.error('Erro:', error));
+        });
+    </script>
+
+</body>
+</html>

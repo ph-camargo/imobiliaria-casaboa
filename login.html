@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" class="css">
+    <style>
+        .logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .container {
+            width: 60%; /* Aumentando o tamanho do container */
+            margin: 0 auto;
+            padding: 2rem;
+            border: 2px solid #ddd; /* Borda visível */
+            border-radius: 10px; /* Bordas arredondadas */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adicionando sombra sutil */
+            background-color: #fff; /* Cor de fundo branca */
+        }
+
+        .form-control {
+            border-radius: 5px; /* Bordas arredondadas */
+            padding: 12px; /* Aumentando o espaço interno */
+            font-size: 14px; /* Tamanho de fonte ajustado */
+            width: 100%;
+        }
+
+        .btn-outline-secondary {
+            border-radius: 5px; /* Bordas arredondadas */
+            padding: 10px 20px;
+        }
+
+        .text-primary {
+            color: #0056b3; /* Azul mais escuro */
+            font-weight: bold; /* Negrito */
+        }
+
+        .p-3 {
+            padding: 2rem;
+        }
+
+        .nav-link {
+            font-size: 18px; /* Ajustando o tamanho da fonte para a navegação */
+        }
+
+        .back-arrow {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px; /* Tamanho maior para a seta */
+            color: rgb(5, 12, 105); /* Cor da seta */
+            cursor: pointer;
+        }
+
+        .back-arrow:hover {
+            color: #003366; /* Um tom mais escuro de azul quando o ícone é hover */
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid p-0">
+        <div class="row">
+            <div class="col-md-12">
+                <header class="text-center p-3">
+
+                    <a href="home.html">
+                        <i class="bi bi-arrow-left back-arrow"></i>
+                    </a>
+                    <img src="img/logo.jpg" alt="Logo da Imobiliária" class="logo">
+                    <h2 class="text-dark mt-3">Login</h2>
+                </header>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 p-5">
+                <ul class="list-group">
+                    <form id="loginForm">
+                        <li class="list-group-item">
+                            <label for="email" class="form-label">E-mail:</label>
+                            <input type="email" class="form-control" id="email" placeholder="Digite seu email" name="email" required><br><br>
+                        </li>
+                        <li class="list-group-item">
+                            <label for="senha" class="form-label">Senha:</label>
+                            <input type="password" class="form-control" id="senha" placeholder="Digite sua senha" name="senha" required><br><br>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <button type="submit" class="btn btn-outline-secondary">Login</button>
+                            <a href="cadastro.html" class="text-decoration-none text">
+                                Não tem uma conta? <span>Cadastre-se</span>
+                            </a>
+                        </li>
+                    </form>
+                </ul>
+            </div>
+        </div>
+
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+
+            try {
+                const response = await fetch('http://localhost:3001/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, senha })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('message').innerText = data.message;
+                    localStorage.setItem('token', data.token); // Armazena o token no localStorage
+
+                    // Redireciona para a URL recebida do backend (pode ser 'adm.html' ou outra página)
+                    window.location.href = data.redirectUrl; 
+                } else {
+                    document.getElementById('message').innerText = 'Erro: ' + data.message;
+                }
+            } catch (error) {
+                document.getElementById('message').innerText = 'Erro na requisição: ' + error.message;
+            }
+        });
+    </script>
+
+</body>
+</html>

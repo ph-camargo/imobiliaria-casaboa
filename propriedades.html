@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" class="css">
+  <style>
+    .card {
+  border-radius: 10px; /* Bordas arredondadas */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.card-body {
+  padding: 20px; /* Padding mais suave */
+}
+
+/* Estilo do botão "Fechar" */
+.btn-sm {
+  margin-top: 10px;
+}
+
+/* Detalhes da propriedade */
+#property-info {
+  font-size: 1rem; /* Ajuste do tamanho da fonte */
+}
+
+#property-details {
+  padding: 20px;
+  background-color: #f9f9f9; /* Fundo suave */
+  border-radius: 8px;
+}
+
+/* Responsividade: ajuste em telas menores */
+@media (max-width: 768px) {
+  .card {
+    max-width: 100%;
+  }
+}
+  </style>
+</head>
+<body>
+  <header>
+      <div class="container-fluid">
+          <div class="row">
+            <div class="col-12 m-4">
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <div class="row">
+              <div class="col-6">
+                  <div class="imagem-logo imagem-logo-expand-sm">
+                      <img width="130vw" src="img/logo.jpg" alt="logo">
+                  </div> 
+            </div>
+              <div class="col-6">
+                  <ul class="nav justify-content-end">
+                      <li class="nav-item">
+                        <a class="nav-link active"  aria-current="page" href="home.html">Home</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="propriedades.html">Propriedades</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="sobrenos.html">Sobre Nós</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="contato.html">Contato</a>
+                      </li>
+                    </ul>
+              </div>
+          </div>
+      </div>
+  </header>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 m-3">
+      </div>
+    </div>
+  </div>
+
+  <figure class=" text text-center">
+    <blockquote class="blockquote">
+      <b><p>Encontre a casa dos seus sonhos</p></b>
+    </blockquote>
+    <figcaption class="subtext blockquote-footer">
+      Casas e apartamentos para<cite title="Source Title"> comprar e alugar</cite>
+    </figcaption>
+  </figure>
+
+
+
+  <div class="container">
+    <div class="row">
+     <div class="col-md-6">
+        <i class="bi bi-sliders" style="font-size: 2rem; color: rgb(5,12,105); cursor: pointer;" data-bs-toggle="modal" data-bs-target="#filtroModal"></i>
+     </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="filtroModal" tabindex="-1" aria-labelledby="filtroModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="filtroModalLabel">Filtrar Propriedades</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <!-- Filtro por tamanho -->
+            <div class="mb-3">
+              <label for="tamanhoCasa" class="form-label">Tamanho da Casa (m²)</label>
+              <input type="number" class="form-control" id="tamanhoCasa" placeholder="Ex: 120">
+            </div>
+            <!-- Filtro por número de quartos -->
+            <div class="mb-3">
+              <label for="numQuartos" class="form-label">Número de Quartos</label>
+              <select class="form-select" id="numQuartos">
+                <option value="" selected>Selecione</option>
+                <option value="1">1 Quarto</option>
+                <option value="2">2 Quartos</option>
+                <option value="3">3 Quartos</option>
+                <option value="4+">4 ou mais Quartos</option>
+              </select>
+            </div>
+            <!-- Filtro por tipo de casa -->
+            <div class="mb-3">
+              <label for="tipoCasa" class="form-label">Tipo de Propriedade</label>
+              <select class="form-select" id="tipoCasa">
+                <option value="" selected>Selecione</option>
+                <option value="apartamento">Apartamento</option>
+                <option value="sobrado">Sobrado</option>
+                <option value="casa">Casa</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary" id="apply-filters-btn">Aplicar Filtros</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div id="properties-list" class="row row-cols-1 row-cols-md-3 g-4">
+                <!--Os cartões das propriedades serão gerados dinamicamente via JavaScript-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 m-3">
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 m-3">
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="card" style="max-width: 500px; margin: auto;">
+        <div id="property-details" style="display: none;">
+          <div id="property-info" class="card-body">
+            <!-- Detalhes da propriedade vão aparecer aqui -->
+          </div>
+          <button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('property-details').style.display='none'">Fechar</button>
+          <button type="button" class="btn  btn-outline-secondary btn-sm" onclick="agendarVisita()">Agendar Visita</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+  const propriedades = [
+  {tipo: "casa", tamanho: 200, quartos: 4, preco: "R$1.000.000,00", endereco: "Rua das Flores, 123, São Paulo, SP", descricao: "Piscina e churrasqueira", imagem: "img/casa.jpg", id: 'casa1'},
+  {tipo: "apartamento", tamanho: 80, quartos: 2, preco: "R$500.000,00", endereco: "Av. Paulista, 456, São Paulo, SP", descricao: "Vista para a cidade", imagem: "img/casa2.jpeg", id: 'casa2'},
+  {tipo: "sobrado", tamanho: 100, quartos: 3, preco: "R$500.000,00", endereco: "Av. Paulista, 456, São Paulo, SP", descricao: "Piscina, churrasqueira e cinema", imagem: "img/casa3.jpg", id: 'casa3'},
+  {tipo: "sobrado", tamanho: 100, quartos: 2, preco: "R$850.000,00", endereco: "Rua dos Lírios, 101, Porto Alegre, RS", descricao: "Piscina e churrasqueira", imagem: "img/casa4.jpeg", id: 'casa4'},
+  {tipo: "apartamento", tamanho: 110, quartos: 4, preco: "R$1.200.000,00", endereco: "Rua do Sol, 99, Curitiba, PR", descricao: "Piscina e Jardim", imagem: "img/casa5.jpeg", id: 'casa5'},
+  {tipo: "casa", tamanho: 160, quartos: 4, preco: "R$1.350.000,00", endereco: "Avenida das Palmeiras, 500, Vila Jardim, Belo Horizonte, MG", descricao: "Casa com piscina, churrasqueira e jardim amplo", imagem: "img/casa6.webp", id: 'casa6'},
+  {tipo: "apartamento", tamanho: 90, quartos: 2, preco: "R$650.000,00", endereco: "Rua São João, 145, Salvador, BA", descricao: "Apartamento moderno com varanda e vista para o mar", imagem: "img/casa7.webp", id: 'casa7'},
+  {tipo: "casa", tamanho: 250, quartos: 5, preco: "R$2.000.000,00", endereco: "Rua do Ouro, 567, Rio de Janeiro, RJ", descricao: "Casa de luxo com sauna, academia e piscina", imagem: "img/casa8.jpg", id: 'casa8'},
+  {tipo: "sobrado", tamanho: 150, quartos: 4, preco: "R$950.000,00", endereco: "Rua das Flores, 987, Fortaleza, CE", descricao: "Sobrado com jardim e varanda gourmet", imagem: "img/casa9.jpg", id: 'casa9'}
+];
+
+  const applyFilters = () => {
+      const sizeFilter = document.getElementById("tamanhoCasa").value;
+      const roomsFilter = document.getElementById("numQuartos").value;
+      const typeFilter = document.getElementById("tipoCasa").value;
+
+      const filteredProperties = propriedades.filter(property => {
+          const matchesType = !typeFilter || property.tipo === typeFilter;
+          const matchesRooms =
+              !roomsFilter ||
+              (roomsFilter === "4+" ? property.quartos >= 4 : property.quartos == roomsFilter);
+          const matchesSize = !sizeFilter || property.tamanho >= sizeFilter;
+
+          return matchesType && matchesRooms && matchesSize;
+      });
+
+      renderProperties(filteredProperties);
+  };
+
+  const renderProperties = (propertiesToRender = propriedades) => {
+      const propertyList = document.getElementById("properties-list");
+
+      propertyList.innerHTML = "";
+
+      propertiesToRender.forEach(property => {
+          propertyList.innerHTML += `
+              <div class="col">
+                  <div class="card h-100">
+                      <img src="${property.imagem}" class="card-img-top" alt="${property.tipo}">
+                      <div class="card-body">
+                          <h5 class="card-title">${property.preco}</h5>
+                          <p class="card-text">${property.endereco}</p>
+                          <ul class="list-group list-group-flush">
+                              <li>${property.quartos} Quarto(s)</li>
+                              <li>${property.tamanho} m²</li>
+                              <li>${property.descricao}</li>
+                          </ul>
+                          <button type="button" class="btn btn-outline-secondary ver-mais-btn" data-id="${property.id}">Ver mais</button>
+                      </div>
+                  </div>
+              </div>
+          `;
+      });
+      addDetailsListener();
+  };
+
+  const addDetailsListener = () => {
+    document.querySelectorAll(".ver-mais-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+            const property = propriedades.find(p => p.id === id);
+
+            if (property) {
+                // Exibe a seção de detalhes
+                document.getElementById("property-details").style.display = "block";
+
+                // Preenche os detalhes da propriedade
+                document.getElementById("property-info").innerHTML = `
+                    <h4>${property.tipo} em ${property.endereco}</h4>
+                    <p><strong>Preço:</strong> ${property.preco}</p>
+                    <p><strong>Quartos:</strong> ${property.quartos}</p>
+                    <p><strong>Tamanho:</strong> ${property.tamanho} m²</p>
+                    <p><strong>Descrição:</strong> ${property.descricao}</p>
+                    <img src="${property.imagem}" alt="${property.tipo}" class="img-fluid">
+                `;
+            } else {
+                alert("Propriedade não encontrada.");
+            }
+        });
+    });
+};
+
+  document.getElementById("apply-filters-btn").addEventListener("click", applyFilters);
+  renderProperties();
+
+  function agendarVisita() {
+            const endereco = "Avenida das Acácias, 123, Vila Nova, Natal, RN, 40000-111";
+            const preco = "R$1.800.000,00";
+            const assunto = encodeURIComponent("Agendamento de Visita");
+            const corpo = encodeURIComponent(
+                `Olá, gostaria de agendar uma visita para o imóvel localizado em:\n\n${endereco}\n\nPreço: ${preco}\n\nPor favor, entre em contato comigo para combinarmos os detalhes.`
+            );
+    
+            const email = "imobiliaria@casa.boa.br"; // Substitua pelo email desejado
+            const mailtoLink = `mailto:${email}?subject=${assunto}&body=${corpo}`;
+    
+            window.location.href = mailtoLink;
+        }
+</script>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 m-4">
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 m-4">
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container text-center mt-5">
+    <div class="row">
+      <div class="col">
+        <a href="propriedades.html" class="btn btn-outline-secondary">Voltar ao topo</a>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 m-4">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="container-fluid bg-dark text-white py-4">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <h5>Sobre</h5>
+            <p>Somos uma imobiliária focada em encontrar a sua casa dos sonhos. Entre em contato e realize seus sonhos conosco!</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <h5>Links Rápidos</h5>
+            <ul class="list-unstyled">
+                <li><a href="home.html" class="text-white text-decoration-none">Home</a></li>
+                <li><a href="propriedades.html" class="text-white text-decoration-none">Propriedades</a></li>
+                <li><a href="sobrenos.html" class="text-white text-decoration-none">Sobre Nós</a></li>
+                <li><a href="contato.html" class="text-white text-decoration-none">Contato</a></li>
+            </ul>
+        </div>
+        <div class="col-md-4 mb-4">
+            <h5>Contato</h5>
+            <ul class="list-unstyled">
+                <li></i> Taquara, RS</li>
+                <li></i> +55 (51) 99415-3084</li>
+                <li></i> imobiliaria@casa.boa.br</li>
+            </ul>
+        </div>
+    </div>
+    <div class="text-center border-top pt-3">
+        <p class="mb-0">© 2024 Casa Boa. Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+</html>
